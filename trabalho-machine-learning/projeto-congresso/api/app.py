@@ -7,14 +7,16 @@ app = Flask(__name__)
 CORS(app)
 
 # Carregar o modelo treinado
-with open("../ml/model.pkl", "rb") as f:
+with open("ml/model.pkl", "rb") as f:
     model = pickle.load(f)
 
 N_FEATURES = 16  # número de votos esperados
 
+
 @app.route("/health", methods=["GET"])
 def health():
     return jsonify({"status": "ok", "model": "naive_bayes", "features": N_FEATURES})
+
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -40,6 +42,6 @@ def predict():
         "party": party_map.get(int(pred), "unknown")
     })
 
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000, debug=True)
-    
